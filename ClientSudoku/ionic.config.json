@@ -1,0 +1,7 @@
+{
+  "name": "ClientSudoku",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
