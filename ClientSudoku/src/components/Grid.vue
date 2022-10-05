@@ -1,9 +1,8 @@
-<template>
-    <square-cell></square-cell>
+<template>  
    <ion-buttons>
-        <square-cell></square-cell>
-        <square-cell></square-cell>
-        <square-cell></square-cell>
+        <square-cell :InitialValue="3"></square-cell>
+        <square-cell :InitialValue="2"></square-cell>
+        <square-cell :InitialValue="8"></square-cell>
    </ion-buttons>
 </template>
 
@@ -14,6 +13,7 @@ import SquareCell from "./square.vue"
 
 export default defineComponent({
   name: 'GridSudoku',
+  props: ["GridId"],
   components: {
     IonButtons,
     SquareCell,

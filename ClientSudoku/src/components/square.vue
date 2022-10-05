@@ -8,12 +8,13 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'SquareCell',
+  props: ["InitialValue"],
   components: {
     IonButton,
   },
   data() {
         return {
-            value: 0,
+            value: this.InitialValue,
             disabled: false
         }
     },

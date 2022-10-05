@@ -1,23 +1,30 @@
 <template>
   <base-page>  
     <ion-content :fullscreen="true">
-      <ion-button router-link="/play/1">Grid 1</ion-button>
+      <grid-sudoku :GridId="idGrid"></grid-sudoku>
     </ion-content>
   </base-page>
 </template>
 
 <script>
-import { IonContent, IonButton } from '@ionic/vue';
+import { IonContent } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import BasePage from "./BasePageLayout.vue"
+import GridSudoku from "../components/Grid.vue"
+import { useRoute } from "vue-router"
 
 export default defineComponent({
-  name: 'HomePage',
+  name: 'PlayPage',
   components: {
     IonContent,
     BasePage,
-    IonButton,
+    GridSudoku
   },
+  setup() {
+        const route = useRoute();
+        const { idGrid } = route.params;
+        return { idGrid };
+    },
 });
 </script>
 
