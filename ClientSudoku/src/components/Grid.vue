@@ -1,8 +1,8 @@
 <template>  
    <ion-buttons>
-        <square-cell :InitialValue="3"></square-cell>
-        <square-cell :InitialValue="2"></square-cell>
-        <square-cell :InitialValue="8"></square-cell>
+        <template v-for="(number, index) in GridList" :key="index">
+            <square-cell :InitialValue="number"></square-cell>
+        </template>
    </ion-buttons>
 </template>
 
@@ -10,6 +10,7 @@
 import { IonButtons } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import SquareCell from "./square.vue"
+import GridListFile from "../../public/assets/grid.txt"
 
 export default defineComponent({
   name: 'GridSudoku',
@@ -17,6 +18,14 @@ export default defineComponent({
   components: {
     IonButtons,
     SquareCell,
+  },
+  data() {
+    return {
+        gridList: GridListFile
+    }
+  },
+  mounted() {
+    console.log({ GridListFile })
   },
 });
 
