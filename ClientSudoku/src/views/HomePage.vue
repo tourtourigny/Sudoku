@@ -1,7 +1,7 @@
 <template>
   <base-page>  
     <ion-content :fullscreen="true">
-      <ion-button router-link="/play/1">Grid 1</ion-button>
+      <ion-button router-link="/play">Play</ion-button>
     </ion-content>
   </base-page>
 </template>

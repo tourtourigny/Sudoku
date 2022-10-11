@@ -13,7 +13,7 @@ const routes = [
     component: HomePage
   },
   {
-    path: '/play/:id',
+    path: '/play',
     name: 'Play',
     component: PlayPage
   }

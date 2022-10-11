@@ -1,7 +1,14 @@
 <template>
   <base-page>  
     <ion-content :fullscreen="true">
-      <grid-sudoku :GridId="idGrid"></grid-sudoku>
+      <div class="main-content">
+        <div class="container">
+          <grid-sudoku id="grid"></grid-sudoku>
+        </div>
+        <div class="container">
+          <p>number pad</p>
+        </div>
+      </div>
     </ion-content>
   </base-page>
 </template>
@@ -11,7 +18,6 @@ import { IonContent } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import BasePage from "./BasePageLayout.vue"
 import GridSudoku from "../components/Grid.vue"
-import { useRoute } from "vue-router"
 
 export default defineComponent({
   name: 'PlayPage',
@@ -20,40 +26,25 @@ export default defineComponent({
     BasePage,
     GridSudoku
   },
-  setup() {
-        const route = useRoute();
-        const { idGrid } = route.params;
-        return { idGrid };
-    },
 });
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+#grid{
+  border: 2px;
+  border-color: black;
+  border-style: solid;
+}
+.main-content{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
 </style>
