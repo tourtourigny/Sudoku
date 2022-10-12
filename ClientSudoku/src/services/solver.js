@@ -5,48 +5,61 @@ export default class Solver {
     }
     solve() {
         let safe_count = 0
-        let change = false
-        console.log("start of solve")
         do{
-            change = this.addImpossibles()
-            this.solveSubGrid()
-            console.log("passage")
+            this.addImpossibles()
+            this.solveSubGrids()
             safe_count++
-        } while(change && safe_count < 1000)
-        console.log(safe_count)
-        console.log(this.grid)
+        } while(this.grid.some((cell) => cell.value === null) && safe_count < 100)
+        return this.grid.map((cell) => cell.value).join("")
     }
 
     addImpossibles() {
-        let change = false
-        this.grid.forEach((cell, index) => {if(cell.value)change |= this.addImpossible(cell.value, index)})
-        return change
+        this.grid.forEach((cell, index) => {cell.value && this.addImpossible(cell.value, index)})
     }
 
     addImpossible(number, index){
-        let change = false
         let mod = index % 9
-        let remainder = ~~(index / 9);
+        let remainder = Math.floor(index / 9);
         //si la case est dans la meme colonne ou rangee (reste div ou meme classe modulo) mettre le chiffre comme impossible
-        this.grid.forEach((cell, index) => {if(!cell.value && (index%9 === mod || ~~index/9 === remainder))cell.addImpossible(number); change|= cell.solved()})
-        return change
+        this.grid.forEach((cell, index) => {if(number !== null && !cell.value && (index%9 === mod || Math.floor(index/9) === remainder))cell.addImpossible(number); cell.solved()})
     }
 
-    solveSubGrid(startIndex){
+    solveSubGrids() {
+        for (let i=0; i < 81 ; i+=3) {
+            if (Math.floor(i/9) === 0 || Math.floor(i/9) === 3 || Math.floor(i/9) === 6) this.solveSubGrid(i)
+        }
+    }
+
+    solveSubGrid(startIndex) {
         let possible = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        let numbersInSubGrid = []
         let modStart = startIndex % 9
-        let remainderStart = ~~(startIndex / 9);
+        let remainderStart = Math.floor(startIndex / 9);
         //verifie que c'est la meme colonne ou une des deux suivantes
         let modValid = function(index) {return index % 9 >= modStart && index % 9 < modStart + 3}
         //verifie que c'est la meme rangee ou une des deux suivantes
-        let remainderValid = function(index) {return ~~(index / 9) >= remainderStart && ~~(index / 9) < remainderStart + 3}
-        this.grid.forEach((cell, index) => {if(modValid(index) && remainderValid(index))possible = possible.filter(cell.value)})
-        for (let option in possible) {
+        let remainderValid = function(index) {return Math.floor(index / 9) >= remainderStart && Math.floor(index / 9) < remainderStart + 3}
+        //prend les nombres deja dans la sous-grille (section 3x3)
+        this.grid.forEach((cell, index) => { if(modValid(index) && remainderValid(index) && cell.value !== null) numbersInSubGrid.push(cell.value)})
+        //garde les nombre pas dans la sous-grille
+        possible = possible.filter((number) => !numbersInSubGrid.includes(number))
+        for (let option of possible) {
             let possibleCell = null
-            if(this.grid.forEach((cell, index) => {if(!cell.value && modValid(index) && remainderValid(index) && !cell.impossibleValues.includes(option))if(possibleCell){return false}else{possibleCell=index}})){
-                this.grid[possibleCell] = option
-            }
-
+            try{this.grid.forEach((cell, index) => {
+                //regarde si est dans la sous-grille et si la valeur est possible
+                if(cell.value === null && modValid(index) && remainderValid(index) && !cell.impossibleValues.includes(option)) {
+                    if(possibleCell !== null) {
+                        //si on a plus qu'une option pour le chiffre on ne l'assigne pas a une case
+                        throw "More than one option"
+                    } else {
+                        possibleCell = index
+                    }
+                }
+            })
+            //assigne si on a une seule case possible dans la sous-grille
+            if(possibleCell !== null) this.grid[possibleCell].value = option
+            //eslint-disable-next-line
+            } catch (Exception) { }//si on a plusieurs possibilitees pour un chiffre dans la sous-grille
         }
     }
 }
