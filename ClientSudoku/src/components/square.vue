@@ -1,6 +1,6 @@
 <template>
-    <ion-button v-if="InitialValue === '0'" fill="outline">{{value}}</ion-button>
-    <ion-button v-else fill="outline" :disabled="true">{{value}}</ion-button>
+    <ion-button v-if="value === '0'" fill="outline"> </ion-button>
+    <ion-button v-else fill="outline" :disabled="true">{{this.value}}</ion-button>
 </template>
 
 <script>
@@ -9,15 +9,10 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'SquareCell',
-  props: ["InitialValue"],
+  props: ["value"],
   components: {
     IonButton,
   },
-  data() {
-      return {
-        value: this.InitialValue === '0' ? '' : this.InitialValue
-      }
-    },
 });
 </script>
 

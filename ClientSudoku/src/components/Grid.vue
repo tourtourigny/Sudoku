@@ -1,12 +1,14 @@
 <template>  
+  <div class="flexbox">
    <ion-buttons>
       <div v-for="(col, idxcol) in this.gridList" :key="idxcol">
-        <div v-for="(number, idxrow) in col[0]" :key="idxrow">
-          <square-cell v-bind:class="{'pad-side': idxcol % 3 === 0 && idxcol !== 0, 'pad-top': idxrow % 3 === 0 && idxrow !== 0}"  :InitialValue="number"></square-cell>
+        <div v-for="(number, idxrow) in col" :key="idxrow">
+          <square-cell v-bind:class="{'pad-side': idxcol % 3 === 0 && idxcol !== 0, 'pad-top': idxrow % 3 === 0 && idxrow !== 0}"  v-bind:value="number"></square-cell>
         </div>
       </div>
    </ion-buttons>
    <ion-button @click="solve()">Solve</ion-button>
+  </div>
 </template>
 
 <script>
@@ -24,7 +26,7 @@ export default defineComponent({
   },
   data() {
     return {
-        gridList: [["310004069"],["000000200"],["008005040"],["000000005"],["006000017"],["807030000"],["590700006"],["600003050"],["000100002"]]
+        gridList: ["310004069","000000200","008005040","000000005","006000017","807030000","590700006","600003050","000100002"]
     }
   },
   methods: {
@@ -34,7 +36,12 @@ export default defineComponent({
         stringGrid += element;
       });
       const solver = new Solver(stringGrid);
-      console.log(solver.solve())
+      const solved = solver.solve()
+      let newGrid = []
+      for(let i=0; i < 81; i += 9) {
+        newGrid.push(solved.substring(i, i+9))
+      }
+      this.gridList = newGrid
       return;
     }
   }
@@ -43,6 +50,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.flexbox{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .pad-side{
   margin-left: 0.3em;
 }
