@@ -38,11 +38,8 @@ export default defineComponent({
       const solver = new Solver(stringGrid);
       const solved = solver.solve()
       let newGrid = []
-      for(let i=0; i < 81; i += 9) {
-        newGrid.push(solved.substring(i, i+9))
-      }
+      for(let i=0; i < 9; i++) { newGrid.push(solved.substring(9 * i, 9 * (i+1))) }
       this.gridList = newGrid
-      return;
     }
   }
 });
